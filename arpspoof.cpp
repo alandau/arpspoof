@@ -276,17 +276,25 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	if (victim.empty()) {
-		fprintf(stderr, "Missing required argument\n");
+		fprintf(stderr, "Missing required argument, see --help\n");
 		return 1;
 	}
 
 	uint8_t victimip[4], targetip[4] = { 0 };
 	{
 		uint32_t a = inet_addr(victim.c_str());
+		if (a == INADDR_NONE) {
+			fprintf(stderr, "Bad victim specified, should be IPv4 address: %s\n", victim.c_str());
+			return 1;
+		}
 		memcpy(victimip, &a, 4);
 	}
 	if (!target.empty()) {
 		uint32_t a = inet_addr(target.c_str());
+		if (a == INADDR_NONE) {
+			fprintf(stderr, "Bad target specified, should be IPv4 address: %s\n", target.c_str());
+			return 1;
+		}
 		memcpy(targetip, &a, 4);
 	}
 
@@ -330,7 +338,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	if (ifaceidx < 0 || ifaceidx >= (int)ifaces.size()) {
-		fprintf(stderr, "Can't find interface (explicitly specified or matching victim IP)\n");
+		fprintf(stderr, "Can't find interface (explicitly specified or matching victim IP) for %s\n", victim.c_str());
 		return 1;
 	}
 	const iface_info& iface = ifaces[ifaceidx];

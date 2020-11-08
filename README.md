@@ -1,6 +1,6 @@
 # arpspoof - A simple ARP spoofer for Windows
 
-`arpspoof` mounts an [ARP spoofing](https://en.wikipedia.org/wiki/ARP_spoofing) attack against a host on the local network. This results in traffic from the attacked host to the default gateway (and all non-LAN hosts) and back going through the local computer and can thus be captured with tools like Wireshark. `arpspoof` will also forward this traffic, so Windows does NOT have to be configured as a router.
+`arpspoof` mounts an [ARP spoofing](https://en.wikipedia.org/wiki/ARP_spoofing) attack against a host on the local network. This results in traffic from the attacked host to the default gateway (and all non-LAN hosts) and back going through the local computer and can thus be captured with tools like [Wireshark](https://www.wireshark.org/). `arpspoof` will also forward this traffic, so Windows does NOT have to be configured as a router.
 
 ### TL;DR:
 ```
@@ -11,7 +11,7 @@ Redirecting 192.168.1.10 (00:11:22:33:44:55) ---> 192.168.1.1 (22:33:44:55:66:77
 Press Ctrl+C to stop
 ```
 
-Then run `tcpdump` (or Wireshark) on the local host with the victim's MAC as a filter:
+Then run `tcpdump` (or [Wireshark](https://www.wireshark.org/)) on the local host with the victim's MAC as a filter:
 ```
 tcpdump ether host 00:11:22:33:44:55
 ```
@@ -65,4 +65,4 @@ C:\>arpspoof.exe --oneway 192.168.1.5
 
 `arpspoof` was developed and tested on Windows 10. It should work on Windows Vista/7/8/10. It does NOT work on Windows XP, since it uses APIs introduced in Vista.
 
-`arpspoof` uses [WinPcap](https://www.winpcap.org/) to send spoofed packets and forward traffic. WinPcap should be installed for `arpspoof` to run. Note that Wireshark installs WinPcap by default, so having Wireshark installed should be enough.
+`arpspoof` uses [WinPcap](https://www.winpcap.org/) or [Npcap](https://nmap.org/npcap/) to send spoofed packets and forward traffic. WinPcap/Npcap should be installed for `arpspoof` to run. Npcap is the more modern one, so it is recommended to use that. Note that [Wireshark](https://www.wireshark.org/) installs Npcap by default, so having Wireshark installed should be enough.
