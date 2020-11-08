@@ -217,12 +217,25 @@ void handle_packet(pcap_t *pcap, pcap_pkthdr *header, const uint8_t *data, const
 	}
 }
 
+void init_npcap_dll_search_path() {
+	wchar_t path[MAX_PATH];
+
+	if (!GetSystemDirectory(path, sizeof(path) / sizeof(*path) - sizeof(L"\\Npcap") / sizeof(wchar_t))) {
+		return;
+	}
+	wcscat_s(path, L"\\Npcap");
+	SetDllDirectory(path);
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc == 2 && !strcmp(argv[1], "--help")) {
 		fprintf(stderr, "%s --list | [-i iface] [--oneway] victim-ip [target-ip]\n", argv[0]);
 		return 0;
 	}
+
+	init_npcap_dll_search_path();
+
 	if (argc == 2 && !strcmp(argv[1], "--list")) {
 		std::vector<iface_info> ifaces = find_ifaces();
 		print_ifaces(ifaces);
